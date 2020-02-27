@@ -6,10 +6,12 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/supermar?characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
-    password: 123456
+    password: 662436
   mvc:
     servlet:
       load-on-startup: 1
+    favicon:
+      enabled: false
   thymeleaf:
     cache: false
     mode: HTML5
