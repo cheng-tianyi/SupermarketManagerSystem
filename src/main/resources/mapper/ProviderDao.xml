@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cty.dao.ProviderDao" >
+  <resultMap id="BaseResultMap" type="com.cty.entity.Provider" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="pro_code" property="proCode" jdbcType="VARCHAR" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="pro_desc" property="proDesc" jdbcType="VARCHAR" />
+    <result column="pro_contact" property="proContact" jdbcType="VARCHAR" />
+    <result column="pro_phone" property="proPhone" jdbcType="VARCHAR" />
+    <result column="pro_address" property="proAddress" jdbcType="VARCHAR" />
+    <result column="pro_fax" property="proFax" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="BIGINT" />
+    <result column="creation_date" property="creationDate" jdbcType="TIMESTAMP" />
+    <result column="modifyDate" property="modifydate" jdbcType="TIMESTAMP" />
+    <result column="modifyBy" property="modifyby" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, pro_code, pro_name, pro_desc, pro_contact, pro_phone, pro_address, pro_fax, created_by, 
+      creation_date, modifyDate, modifyBy
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cty.entity.ProviderQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from smbms_provider
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.cty.entity.ProviderQuery" >
+    delete from smbms_provider
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cty.entity.Provider" >
+    insert into smbms_provider (id, pro_code, pro_name, 
+      pro_desc, pro_contact, pro_phone, 
+      pro_address, pro_fax, created_by, 
+      creation_date, modifyDate, modifyBy
+      )
+    values (#{id,jdbcType=BIGINT}, #{proCode,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{proDesc,jdbcType=VARCHAR}, #{proContact,jdbcType=VARCHAR}, #{proPhone,jdbcType=VARCHAR}, 
+      #{proAddress,jdbcType=VARCHAR}, #{proFax,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cty.entity.Provider" >
+    insert into smbms_provider
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="proCode != null" >
+        pro_code,
+      </if>
+      <if test="proName != null" >
+        pro_name,
+      </if>
+      <if test="proDesc != null" >
+        pro_desc,
+      </if>
+      <if test="proContact != null" >
+        pro_contact,
+      </if>
+      <if test="proPhone != null" >
+        pro_phone,
+      </if>
+      <if test="proAddress != null" >
+        pro_address,
+      </if>
+      <if test="proFax != null" >
+        pro_fax,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="creationDate != null" >
+        creation_date,
+      </if>
+      <if test="modifydate != null" >
+        modifyDate,
+      </if>
+      <if test="modifyby != null" >
+        modifyBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="proCode != null" >
+        #{proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null" >
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proDesc != null" >
+        #{proDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="proContact != null" >
+        #{proContact,jdbcType=VARCHAR},
+      </if>
+      <if test="proPhone != null" >
+        #{proPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="proAddress != null" >
+        #{proAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="proFax != null" >
+        #{proFax,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null" >
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifydate != null" >
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyby != null" >
+        #{modifyby,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cty.entity.ProviderQuery" resultType="java.lang.Integer" >
+    select count(*) from smbms_provider
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update smbms_provider
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.proCode != null" >
+        pro_code = #{record.proCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proName != null" >
+        pro_name = #{record.proName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proDesc != null" >
+        pro_desc = #{record.proDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proContact != null" >
+        pro_contact = #{record.proContact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proPhone != null" >
+        pro_phone = #{record.proPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proAddress != null" >
+        pro_address = #{record.proAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proFax != null" >
+        pro_fax = #{record.proFax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        created_by = #{record.createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.creationDate != null" >
+        creation_date = #{record.creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifydate != null" >
+        modifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyby != null" >
+        modifyBy = #{record.modifyby,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update smbms_provider
+    set id = #{record.id,jdbcType=BIGINT},
+      pro_code = #{record.proCode,jdbcType=VARCHAR},
+      pro_name = #{record.proName,jdbcType=VARCHAR},
+      pro_desc = #{record.proDesc,jdbcType=VARCHAR},
+      pro_contact = #{record.proContact,jdbcType=VARCHAR},
+      pro_phone = #{record.proPhone,jdbcType=VARCHAR},
+      pro_address = #{record.proAddress,jdbcType=VARCHAR},
+      pro_fax = #{record.proFax,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=BIGINT},
+      creation_date = #{record.creationDate,jdbcType=TIMESTAMP},
+      modifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      modifyBy = #{record.modifyby,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

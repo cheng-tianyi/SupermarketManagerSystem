@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <section>
+        <div class="right">
+            <div class="location">
+                <strong>你现在所在的位置是:</strong>
+                <span>用户管理页面 >> 用户添加页面</span>
+            </div>
+            <div class="providerAdd">
+                <form id="userForm" name="userForm" method="post" action="jsp/user.do">
+                    <input type="hidden" name="method" value="add">
+                    <!--div的class 为error是验证错误，ok是验证成功-->
+                    <div>
+                        <label for="userCode">用户编码：</label> <input type="text" name="userCode" id="userCode" value="" v-model="userEntity.userCode">
+                        <!-- 放置提示信息 -->
+                        <font color="red"></font>
+                    </div>
+                    <div>
+                        <label for="userName">用户名称：</label> <input type="text" name="userName" id="userName" value="" v-model="userEntity.userName"> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label for="userPassword">用户密码：</label> <input type="password" name="userPassword" id="userPassword" value="" v-model="userEntity.userPassword"> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label for="ruserPassword">确认密码：</label> <input type="password" name="ruserPassword" id="ruserPassword" value="" v-model="ruserPassword"> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label>用户性别：</label> <select name="gender" id="gender" v-model="userEntity.gender">
+                        <option value="1" selected="selected">女</option>
+                        <option value="2">男</option>
+                    </select>
+                    </div>
+                    <div>
+                        <label for="birthday">出生日期：</label> <input type="date" id="birthday" name="birthday" v-model="userEntity.birthday">
+                    </div>
+                    <div>
+                        <label for="phone">用户电话：</label> <input type="text" name="phone" id="phone" value="" v-model="userEntity.phone"> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label for="address">用户地址：</label> <input name="address" id="address" value="" v-model="userEntity.address">
+                    </div>
+                    <div>
+                        <label>用户角色：</label>
+                        <!-- 列出所有的角色分类 -->
+                        <select name="userRole" id="userRole" v-model="userEntity.userRole">
+                            <option :value="0">--请选择--</option>
+                            <option :value="roleItem.id" v-for="roleItem in roleList">{{roleItem.roleName}}</option>
+                        </select> <font color="red"></font>
+                    </div>
+                    <div class="providerAddBtn">
+                        <input type="button" name="add" id="add" value="保存" @click="sava()">
+                        <a type="button" id="back" name="back" th:href="@{~/userList}" value="返回">返回</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/js/useradd.js}"></script>
+</body>
+</html>

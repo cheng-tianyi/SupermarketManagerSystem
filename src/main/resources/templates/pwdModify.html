@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <section>
+        <div class="right">
+            <div class="location">
+                <strong>你现在所在的位置是:</strong>
+                <span>密码修改页面</span>
+            </div>
+            <div class="providerAdd">
+                <form id="userForm" name="userForm" method="post" action="jsp/user.do">
+                    <input type="hidden" name="method" value="savepwd">
+                    <!--div的class 为error是验证错误，ok是验证成功-->
+                    <div class="info"></div>
+                    <div class="">
+                        <label >旧密码：</label> <input type="password" v-model="oldPassword" name="oldpassword" id="oldpassword" value=""> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label >新密码：</label> <input type="password" v-model="newPassword" name="newpassword" id="newpassword" value=""> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label >确认新密码：</label> <input type="password" v-model="rePassword"  name="rePassword" id="rnewpassword" value=""> <font color="red"></font>
+                    </div>
+                    <div class="providerAddBtn">
+                        <!--<a href="#">保存</a>-->
+                        <input type="button" name="save" id="save" value="保存" @click="updatePwd()" class="input-button">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script>
+    new Vue({
+        el:"#root",
+        data:{
+            oldPassword:'',
+            newPassword:'',
+            rePassword:'',
+        },
+        methods:{
+            updatePwd:function () {
+                if (this.newPassword!=this.rePassword){
+                    alert("两次密码输入不一致");
+                    return;
+                }
+                var _this =this;
+                axios.post("/user/updatePwd?password="+this.newPassword+"&oldPassword="+this.oldPassword).then(function (respose) {
+                    if (respose.data.success) {
+                        alert(respose.data.message);
+                        location.href="/";
+                    }else {
+                        alert(respose.data.message)
+                    }
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

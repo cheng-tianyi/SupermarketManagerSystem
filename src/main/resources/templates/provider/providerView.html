@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<section>
+    <div class="right">
+    <div class="location">
+        <strong>你现在所在的位置是:</strong>
+        <span>供应商管理页面 >> 信息查看</span>
+    </div>
+    <div class="providerView">
+        <p>
+            <strong>供应商编码：</strong>
+            <span th:text="${session.providerShow.getProCode()}"></span>
+        </p>
+        <p>
+            <strong>供应商名称：</strong>
+            <span th:text="${session.providerShow.getProName()}"></span>
+        </p>
+        <p>
+            <strong>联系人：</strong>
+            <span th:text="${session.providerShow.getProContact()}"></span>
+        </p>
+        <p>
+            <strong>联系电话：</strong>
+            <span th:text="${session.providerShow.getProPhone()}"></span>
+        </p>
+        <p>
+            <strong>传真：</strong>
+            <span th:text="${session.providerShow.getProFax()}"></span>
+        </p>
+        <p>
+            <strong>描述：</strong>
+            <span th:text="${session.providerShow.getProDesc()}"></span>
+        </p>
+        <div class="providerAddBtn">
+            <a type="button" id="back" name="back" value="返回" th:href="@{~/providerlist}">返回</a>
+        </div>
+    </div>
+</div>
+</section>
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+</body>
+</html>

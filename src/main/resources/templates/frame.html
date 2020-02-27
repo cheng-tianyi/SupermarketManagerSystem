@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>超市订单管理系统</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+
+<div th:replace="~{common/head::#header}"></div>
+<div class="right">
+    <img class="wColck" src="static/images/clock.jpg" alt=""/>
+    <div class="wFont">
+        <h2></h2>
+        <p>欢迎来到超市订单管理系统!</p>
+    </div>
+</div>
+<div th:replace="~{common/foot::#footer}"></div>
+</body>
+</html>

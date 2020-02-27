@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/pageination/zpageNav.css}" />
+
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>用户管理页面</span>
+        </div>
+        <div class="search">
+            <form method="get" action="jsp/user.do">
+                <input name="method" value="query" class="input-text" type="hidden"> <span>用户名：</span> <input name="queryname" v-model="searchEntity.userName" class="input-text"
+                                                                                                              type="text" value=""> <span>用户角色：</span>
+                <select name="queryUserRole" v-model="searchEntity.userRole">
+                    <option :value="0">--请选择--</option>
+                    <option :value="roleItem.id" v-for="roleItem in roleList">{{roleItem.roleName}}</option>
+                </select>
+                <input type="hidden" name="pageIndex" value="1" /> <input value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/useradd}">添加用户</a>
+            </form>
+        </div>
+        <!--用户-->
+        <table class="providerTable" cellpadding="0" cellspacing="0">
+            <tr class="firstTr">
+                <th width="10%">用户编码</th>
+                <th width="20%">用户名称</th>
+                <th width="10%">性别</th>
+                <th width="10%">生日</th>
+                <th width="10%">电话</th>
+                <th width="10%">用户角色</th>
+                <th width="30%">操作</th>
+            </tr>
+            <tr class="firstTr" v-for="userItem in userList">
+                <td width="10%">{{userItem.userCode}}</td>
+                <td width="20%">{{userItem.userName}}</td>
+                <td width="10%">{{sex[userItem.gender]}}</td>
+                <td width="10%">{{userItem.birthday}}</td>
+                <td width="10%">{{userItem.phone}}</td>
+                <td width="10%">{{roleEntity[userItem.userRole]}}</td>
+                <td><span><button class="viewProvider" proid=><img th:src="@{~/images/read.png}" alt="查看" title="查看" @click="showDetail(userItem)"/></button></span> <span>
+                    <button class="modifyProvider" href="javascript:;" proid=proname=><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" @click="update(userItem)"/></button></span> <span>
+                    <button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteUser(userItem.userCode)"/></button></span></td>
+            </tr>
+        </table>
+        <!--分页-->
+        <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
+                  v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+        </zpagenav>
+        <input type="hidden" id="totalPageCount" value="" />
+    </div>
+    </section>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/pageination/zpageNav.js}"></script>
+<script type="text/javascript" th:src="@{~/js/userList.js}"></script>
+</body>
+</html>

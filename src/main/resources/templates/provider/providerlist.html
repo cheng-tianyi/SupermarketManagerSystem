@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/pageination/zpageNav.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <section>
+        <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>供应商管理页面</span>
+        </div>
+        <div class="search">
+            <input name="method" value="query" type="hidden">
+            <span>供应商编码：</span> <input name="queryProCode" type="text" value="" v-model="searchEntity.proCode">
+            <span>供应商名称：</span><input name="queryProName" type="text" value="" v-model="searchEntity.proName">
+            <input value="查 询" id="searchbutton" @click="pageHandler(1)">
+            <a th:href="@{~/providerAdd}">添加供应商</a>
+        </div>
+        <!--供应商操作表格-->
+        <table class="providerTable" cellpadding="0" cellspacing="0">
+            <tr class="firstTr">
+                <th width="10%">供应商编码</th>
+                <th width="20%">供应商名称</th>
+                <th width="10%">联系人</th>
+                <th width="10%">联系电话</th>
+                <th width="10%">传真</th>
+                <th width="10%">创建时间</th>
+                <th width="30%">操作</th>
+            </tr>
+             <tr v-for="provider in providerList">
+               <td>{{provider.proCode}}</td>
+               <td>{{provider.proName}}</td>
+               <td>{{provider.proContact}}</td>
+               <td>{{provider.proPhone}}</td>
+               <td>{{provider.proFax}}</td>
+               <td>{{provider.creationDate}}</td>
+               <td><span><button class="viewProvider" @click="proView(provider)"><img th:src="@{~/images/read.png}" alt="查看" title="查看" /></button></span> <span>
+                   <button class="modifyProvider" @click="updataPro(provider)"><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" /></button></span> <span>
+                   <button class="deleteProvider" @click="deletePro(provider.proCode)"><img th:src="@{~/images/schu.png}" alt="删除" title="删除" /></button></span></td>
+             </tr>
+        </table>
+        <!--分页-->
+        <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
+                  v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+        </zpagenav>
+    </div>
+    </section>
+    <!--点击删除按钮后弹出的页面-->
+</div>
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/pageination/zpageNav.js}"></script>
+<script type="text/javascript" th:src="@{~/jQuery/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{~/js/providerlist.js}"></script>
+</body>
+</html>

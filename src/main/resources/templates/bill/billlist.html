@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/pageination/zpageNav.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong> <span>订单管理页面</span>
+        </div>
+        <div class="search">
+
+        <span>商品名称：</span> <input name="queryProductName" type="text" value="" v-model="searchEntity.productName">
+        <span>供应商：</span>
+        <select name="queryProviderId" v-model="searchEntity.providerId">
+            <option :value="0">--请选择--</option>
+            <option :value="provider.id" v-for="provider in providerList">{{provider.proName}}</option>
+        </select>
+         <span>是否付款：</span>
+         <select name="queryIsPayment" v-model="searchEntity.isPayment">
+            <option value="0">--请选择--</option>
+            <option value="1">未付款</option>
+            <option value="2">已付款</option>
+        </select> <input value="查 询" id="searchbutton" @click="pageHandler(1)">
+            <a th:href="@{~/billadd}">添加订单</a>
+        </div>
+        <!--账单表格 样式和供应商公用-->
+        <table class="providerTable" cellpadding="0" cellspacing="0">
+            <tr class="firstTr">
+                <th width="10%">订单编码</th>
+                <th width="20%">商品名称</th>
+                <th width="25%">供应商</th>
+                <th width="10%">订单金额</th>
+                <th width="10%">是否付款</th>
+                <th width="15%">创建时间</th>
+                <th width="10%">操作</th>
+            </tr>
+            <tr class="firstTr" v-for="bill in billList">
+                <td width="10%">{{bill.billCode}}</td>
+                <td width="20%">{{bill.productName}}</td>
+                <td width="25%">{{providerEntity[bill.providerId]}}</td>
+                <td width="10%">{{bill.totalPrice}}</td>
+                <td width="10%">{{isPay[bill.isPayment]}}</td>
+                <td width="15%">{{bill.creationDate}}</td>
+                <td width="10%"><span><button class="viewProvider" @click="billView(bill)"><img th:src="@{~/images/read.png}" alt="查看" title="查看" /></button></span> <span>
+                   <button class="modifyProvider" @click="updataBill(bill)"><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" /></button></span> <span>
+                   <button class="deleteProvider" @click="deleteBill(bill.billCode)"><img th:src="@{~/images/schu.png}" alt="删除" title="删除" /></button></span></td>
+
+            </tr>
+        </table>
+        <!--分页-->
+        <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
+                  v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+        </zpagenav>
+    </div>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/pageination/zpageNav.js}"></script>
+<script type="text/javascript" th:src="@{~/js/billlist.js}"></script>
+</body>
+</html>

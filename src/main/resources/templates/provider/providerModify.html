@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <section>
+        <div class="right">
+            <div class="location">
+                <strong>你现在所在的位置是:</strong>
+                <span>供应商管理页面 >> 供应商修改页</span>
+            </div>
+            <div class="providerAdd">
+                <form id="providerForm" name="providerForm" method="post" action="jsp/provider.do">
+                    <!--div的class 为error是验证错误，ok是验证成功-->
+                    <div class="">
+                        <label for="proCode">供应商编码：</label> <input type="text" name="proCode" id="proCode" value="" readonly="readonly" v-model="providerEntity.proCode">
+                    </div>
+                    <div>
+                        <label for="proName">供应商名称：</label> <input type="text" name="proName" id="proName" value="" v-model="providerEntity.proName"> <font color="red" ></font>
+                    </div>
+                    <div>
+                        <label for="proContact">联系人：</label> <input type="text" name="proContact" id="proContact" value="" v-model="providerEntity.proContact"> <font
+                            color="red"></font>
+                    </div>
+                    <div>
+                        <label for="proPhone">联系电话：</label> <input type="text" name="proPhone" id="proPhone" value="" v-model="providerEntity.proPhone"> <font color="red"></font>
+                    </div>
+                    <div>
+                        <label for="proAddress">联系地址：</label> <input type="text" name="proAddress" id="proAddress" value="" v-model="providerEntity.proAddress">
+                    </div>
+                    <div>
+                        <label for="proFax">传真：</label> <input type="text" name="proFax" id="proFax" value="" v-model="providerEntity.proFax">
+                    </div>
+                    <div>
+                        <label for="proDesc">描述：</label> <input type="text" name="proDesc" id="proDesc" value="" v-model="providerEntity.proDesc">
+                    </div>
+                    <div class="providerAddBtn">
+                        <input type="button" name="save" id="save" value="保存" @click="updatePro()">
+                        <a type="button" id="back" name="back" value="返回" th:href="@{~/providerlist}">返回</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/js/providermodify.js}"></script>
+
+</body>
+</html>

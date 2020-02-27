@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+    <section>
+    <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>用户管理页面 >> 用户信息查看页面</span>
+        </div>
+        <div class="providerView">
+            <p>
+                <strong>用户编号：</strong>
+                <span th:text="${session.modifyUser.getUserCode()}"></span>
+            </p>
+            <p>
+                <strong>用户名称：</strong>
+                <span th:text="${session.modifyUser.getUserName()}"></span>
+            </p>
+            <p>
+                <strong>用户性别：</strong>
+                <span th:text="${session.modifyUser.getGender()==1}?'女':'男'"></span>
+            </p>
+            <p>
+                <strong>出生日期：</strong>
+                <span th:text="${#dates.format(session.modifyUser.getBirthday(),'yyyy-MM-dd')}"></span>
+            </p>
+            <p>
+                <strong>用户电话：</strong>
+                <span th:text="${session.modifyUser.getPhone()}"></span>
+            </p>
+            <p>
+                <strong>用户地址：</strong>
+                <span th:text="${session.modifyUser.getAddress()}"></span>
+            </p>
+            <div class="providerAddBtn">
+                <a type="button" id="back" name="back" th:href="@{~/userList}" value="返回">返回</a>
+            </div>
+        </div>
+    </div>
+    </section>
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+</body>
+</html>

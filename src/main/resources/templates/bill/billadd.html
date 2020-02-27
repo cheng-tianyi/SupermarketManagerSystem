@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>订单管理页面 >> 订单添加页面</span>
+        </div>
+        <div class="providerAdd">
+            <form id="billForm" name="billForm" method="post" action="jsp/bill.do">
+                <!--div的class 为error是验证错误，ok是验证成功-->
+                <input type="hidden" name="method" value="add">
+                <div class="">
+                    <label for="billCode">订单编码：</label>
+                    <input type="text" v-model="billEntity.billCode" name="billcode" class="text" id="billCode" value="">
+                    <!-- 放置提示信息 -->
+                    <font color="red"></font>
+                </div>
+                <div>
+                    <label for="productName">商品名称：</label>
+                    <input type="text" v-model="billEntity.productName" name="productname" id="productName" value="">
+                    <font color="red"></font>
+                </div>
+                <div>
+                    <label for="productUnit">商品单位：</label>
+                    <input type="text" v-model="billEntity.productUnit" name="productunit" id="productUnit" value="">
+                    <font color="red"></font>
+                </div>
+                <div>
+                    <label for="productCount">商品数量：</label>
+                    <input type="text" v-model="billEntity.productCount" name="productcount" id="productCount" value="">
+                    <font color="red"></font>
+                </div>
+                <div>
+                    <label for="totalPrice">总金额：</label>
+                    <input type="text" v-model="billEntity.totalPrice" name="totalprice" id="totalPrice" value="">
+                    <font color="red"></font>
+                </div>
+                <div>
+                    <label >供应商：</label>
+                    <select name="providerid" id="providerId" v-model="billEntity.providerId">
+                        <option :value="0">--请选择--</option>
+                        <option :value="provider.id" v-for="provider in providerList">{{provider.proName}}</option>
+                    </select>
+                    <font color="red"></font>
+                </div>
+                <div>
+                    <label >是否付款：</label>
+                    <input type="radio" name="ispayment" value="1" checked="checked" v-model="billEntity.isPayment">未付款
+                    <input type="radio" name="isPayment" value="2" v-model="billEntity.isPayment">已付款
+                </div>
+                <div class="providerAddBtn">
+                    <input type="button" name="add" id="add" value="保存" @click="save">
+                    <a type="button" id="back" name="back" value="返回" th:href="@{~/billlist}" >返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/js/billadd.js}"></script>
+</body>
+</html>
