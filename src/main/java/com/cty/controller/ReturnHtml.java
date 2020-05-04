@@ -57,5 +57,9 @@ public class ReturnHtml {
     public String pwdModify() {
         return "pwdModify";
     }
+    @RequestMapping("/goodslist")
+    public String goodslist() {
+        return "goods/goodsList";
+    }
 
 }

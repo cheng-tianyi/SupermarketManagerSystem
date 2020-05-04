@@ -27,7 +27,7 @@
             <option value="0">--请选择--</option>
             <option value="1">未付款</option>
             <option value="2">已付款</option>
-        </select> <input value="查 询" id="searchbutton" @click="pageHandler(1)">
+        </select> <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)">
             <a th:href="@{~/billadd}">添加订单</a>
         </div>
         <!--账单表格 样式和供应商公用-->

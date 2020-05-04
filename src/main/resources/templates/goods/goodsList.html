@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/pageination/zpageNav.css}" />
+
+</head>
+<body>
+<div th:replace="~{common/head::#header}"></div>
+<div id="root">
+    <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>物品管理页面</span>
+        </div>
+        <div class="search">
+            <form method="get" action="jsp/user.do">
+                <input name="method" value="query" class="input-text" type="hidden"> <span>商品名：</span> <input name="queryname" v-model="searchEntity.userName" class="input-text"
+                                                                                                              type="text" value=""> <span>供应商：</span>
+                <select name="queryUserRole" v-model="searchEntity.userRole">
+                    <option :value="0">--请选择--</option>
+                    <option :value="roleItem.id" v-for="roleItem in roleList">{{roleItem.roleName}}</option>
+                </select>
+                <input type="hidden" name="pageIndex" value="1" /> <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/useradd}">添加用户</a>
+            </form>
+        </div>
+        <!--用户-->
+        <table class="providerTable" cellpadding="0" cellspacing="0">
+            <tr class="firstTr">
+                <th width="10%">商品名</th>
+                <th width="20%">供货商</th>
+                <th width="10%">价格</th>
+                <th width="20%">到期时间</th>
+                <th width="10%">库存</th>
+                <th width="30%">操作</th>
+            </tr>
+            <tr class="firstTr" v-for="goods in goodsList">
+                <td width="10%">{{goods.goodName}}</td>
+                <td width="20%">{{goods.provider}}</td>
+                <td width="10%">{{goods.price}}</td>
+                <td width="10%">{{goods.expiryDate}}</td>
+                <td width="10%">{{goods.num}}</td>
+                <td><span><button class="viewProvider" proid=><img th:src="@{~/images/read.png}" alt="查看" title="查看" @click="showDetail(userItem)"/></button></span> <span>
+                    <button class="modifyProvider" href="javascript:;" proid=proname=><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" @click="update(userItem)"/></button></span> <span>
+                    <button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteUser(userItem.userCode)"/></button></span></td>
+            </tr>
+        </table>
+        <!--分页-->
+        <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
+                  v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
+        </zpagenav>
+        <input type="hidden" id="totalPageCount" value="" />
+    </div>
+    </section>
+</div>
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+<script type="text/javascript" th:src="@{~/pageination/zpageNav.js}"></script>
+</body>
+<script>
+    new Vue({
+        el:"#root",
+        data:{
+            goodsList:[],
+            sex:{1:"女",2:"男"},
+            page:1,//当前页码
+            pageSize:10,//一页多少条数据
+            total:0,//总记录数
+            maxPage:9,//最大页面数
+            roleEntity:{},
+            roleList:[],
+            searchEntity:{}
+        },
+        methods:{
+            pageHandler:function (page) {
+                this.page=page;
+                var _this=this;
+                axios.post("/goods/findPage?page="+this.page+"&pageSize="+this.pageSize,this.searchEntity).then(function (respose) {
+                    _this.total=respose.data.total;
+                    _this.goodsList = respose.data.rows;
+                    console.log(_this.goodsList)
+
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            deleteUser:function (userCode) {
+                var _this=this;
+                axios.post("/user/deleteUser?userCode="+userCode).then(function (respose) {
+                    if (respose.data.success) {
+                        alert(respose.data.message)
+                        _this.pageHandler(1);
+                    }else {
+                        alert(respose.data.message)
+                    }
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            update:function (user) {
+                var _this=this;
+                axios.post("/user/saveSession",user).then(function (respose) {
+                    location.href="/userModify";
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            showDetail:function (user) {
+                var _this=this;
+                axios.post("/user/saveSession",user).then(function (respose) {
+                    location.href="/userView";
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            }
+        },
+        created:function () {
+            this.pageHandler(1);
+        }
+    })
+</script>
+</html>

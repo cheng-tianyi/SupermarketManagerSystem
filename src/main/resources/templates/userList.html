@@ -24,7 +24,7 @@
                     <option :value="0">--请选择--</option>
                     <option :value="roleItem.id" v-for="roleItem in roleList">{{roleItem.roleName}}</option>
                 </select>
-                <input type="hidden" name="pageIndex" value="1" /> <input value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/useradd}">添加用户</a>
+                <input type="hidden" name="pageIndex" value="1" /> <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/useradd}">添加用户</a>
             </form>
         </div>
         <!--用户-->

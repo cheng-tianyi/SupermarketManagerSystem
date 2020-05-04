@@ -20,7 +20,7 @@
             <input name="method" value="query" type="hidden">
             <span>供应商编码：</span> <input name="queryProCode" type="text" value="" v-model="searchEntity.proCode">
             <span>供应商名称：</span><input name="queryProName" type="text" value="" v-model="searchEntity.proName">
-            <input value="查 询" id="searchbutton" @click="pageHandler(1)">
+            <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)">
             <a th:href="@{~/providerAdd}">添加供应商</a>
         </div>
         <!--供应商操作表格-->
