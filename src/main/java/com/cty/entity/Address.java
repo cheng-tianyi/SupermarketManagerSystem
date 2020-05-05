@@ -1,12 +1,16 @@
 package com.cty.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@TableName("smbms_address")
 public class Address implements Serializable {
     /**
      * 主键ID
      */
+    @TableId
     private Long id;
 
     /**

@@ -1,11 +1,13 @@
 package com.cty.entity.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * @Author cty
@@ -13,7 +15,6 @@ import java.util.Date;
  * @data 2020/5/5 1:56
  */
 @Data
-@Table(name="smbms_goods")
 public class GoodsDTO implements Serializable {
     /**
      * 主键
@@ -38,7 +39,8 @@ public class GoodsDTO implements Serializable {
     /**
      * 到期时间
      */
-    private Date expiryDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Timestamp expiryDate;
 
     /**
      * 单位
@@ -65,7 +67,7 @@ public class GoodsDTO implements Serializable {
      */
     private String note;
 
-    private String num;
+    private Long num;
 
     private static final long serialVersionUID = 1L;
 }

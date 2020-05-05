@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+
+<div th:replace="~{common/head::#header}"></div>
+    <div id="root">
+        <section>
+            <div class="right">
+                <div class="location">
+                    <strong>你现在所在的位置是:</strong>
+                    <span>用户管理页面 >> 物品修改页面</span>
+                </div>
+                <div class="providerAdd">
+                    <form id="goodsForm" name="goodsForm" method="post" action="">
+                        <input type="hidden" name="method" value="modifyexe"> <input type="hidden" name="uid" value="" />
+                        <div>
+                            <label for="goodName">商品名称：</label> <input type="text" name="goodName" id="goodName" value="" v-model="goodsEntity.goodName"> <font color="red"></font>
+                        </div>
+                        <div>
+                            <label for="goodCode">商品条形码：</label> <input type="text" name="goodCode" id="goodCode" value="" v-model="goodsEntity.goodCode"> <font color="red"></font>
+                        </div>
+                        <div>
+                            <label >供应商：</label>
+                            <select name="provider" id="provider" v-model="goodsEntity.provider">
+                                <option :value="0">--请选择--</option>
+                                <option :value="provider.id" v-for="provider in providerList">{{provider.proName}}</option>
+                            </select>
+                            <font color="red"></font>
+                        </div>
+                        <div>
+                            <label for="price">价格：</label> <input type="text" name="price" id="price" value="" v-model="goodsEntity.price"> <font color="red"></font>
+                        </div>
+<!--                        <div>-->
+<!--                            <label for="num">库存：</label> <input type="text" name="num" id="num" value="" v-model="goodsEntity.num"> <font color="red"></font>-->
+<!--                        </div>-->
+                        <div>
+                            <label for="expiryDate">到期时间：</label> <input type="date" name="expiryDate" id="expiryDate" value="" v-model="goodsEntity.expiryDate"> <font color="red"></font>
+                        </div>
+                        <div class="providerAddBtn">
+                            <input type="button" name="save" id="save" value="保存" @click="update()"/>
+                            <a type="button" id="back" name="back" th:href="@{~/userList}">返回</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+</body>
+<script>
+    new Vue({
+        el:"#root",
+        data: {
+            providerList: [],
+            goodsEntity:{},
+            roleList: [],
+        },
+        methods:{
+            showData:function () {
+                var _this =this;
+                axios.post("/goods/getSessionGoods").then(function (respose) {
+                    console.log(respose.data)
+                    _this.goodsEntity = respose.data;
+                    console.log(respose.data)
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            loadProvider:function () {
+                var _this=this;
+                axios.post("/provider/findAll").then(function (respose) {
+                    console.log(respose.data);
+                    _this.providerList = respose.data;
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            update:function () {
+                axios.post("/goods/update",this.goodsEntity).then(function (respose) {
+                    if (respose.data.success) {
+                        alert(respose.data.message)
+                        location.href="/goodslist";
+                    }else {
+                        alert(respose.data.message)
+                    }
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            }
+        },
+        created:function () {
+            this.showData();
+            this.loadProvider();
+        }
+    })
+</script>
+</html>

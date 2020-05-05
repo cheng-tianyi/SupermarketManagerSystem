@@ -1,12 +1,14 @@
 package com.cty.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cty.dao.ProviderDao;
 import com.cty.entity.Provider;
 import com.cty.entity.ProviderQuery;
 import com.cty.entity.pojo.PageResult;
 import com.cty.service.ProviderService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +21,23 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public PageResult findPage(Integer page, Integer pageSize, Provider provider) {
-        PageHelper.startPage(page,pageSize);
-        ProviderQuery query = new ProviderQuery();
-        ProviderQuery.Criteria criteria = query.createCriteria();
-        if (provider!=null){
-            if (provider.getProName()!=null&&!"".equals(provider.getProName())){
-                criteria.andProNameLike("%"+provider.getProName()+"%");
-            }
-            if (provider.getProCode()!=null&&!"".equals(provider.getProCode())){
-                criteria.andProCodeLike("%"+provider.getProCode()+"%");
-            }
-        }
-        Page<Provider> providers = (Page<Provider>)providerDao.selectByExample(query);
-        PageResult result = new PageResult(providers.getTotal(),providers.getResult());
+        IPage<Provider> ipage = new Page<>(page,pageSize);
+        LambdaQueryWrapper<Provider> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(provider.getProName()),Provider::getProName,provider.getProName());
+        wrapper.like(StringUtils.isNotEmpty(provider.getProCode()),Provider::getProCode,provider.getProCode());
+        IPage<Provider> providerIPage = providerDao.selectPage(ipage, wrapper);
+//        ProviderQuery query = new ProviderQuery();
+////        ProviderQuery.Criteria criteria = query.createCriteria();
+////        if (provider!=null){
+////            if (provider.getProName()!=null&&!"".equals(provider.getProName())){
+////                criteria.andProNameLike("%"+provider.getProName()+"%");
+////            }
+////            if (provider.   getProCode()!=null&&!"".equals(provider.getProCode())){
+////                criteria.andProCodeLike("%"+provider.getProCode()+"%");
+////            }
+////        }
+//        List<Provider> providers = providerDao.selectByExample(query);
+        PageResult result = new PageResult(providerIPage.getTotal(),providerIPage.getRecords());
         return result;
     }
 
@@ -50,11 +56,11 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public void update(Provider provider) {
-        providerDao.updateByPrimaryKeySelective(provider);
+        providerDao.updateById(provider);
     }
 
     @Override
     public List<Provider> findAll() {
-        return providerDao.selectAll();
+        return providerDao.selectByExample(null);
     }
 }

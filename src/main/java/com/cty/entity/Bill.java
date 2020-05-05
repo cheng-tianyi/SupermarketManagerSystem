@@ -1,19 +1,19 @@
 package com.cty.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-@Table(name="smbms_bill")
+@TableName("smbms_bill")
 public class Bill implements Serializable {
     /**
      * Ö÷¼üID
      */
-    @Id
+    @TableId
     private Long id;
 
     /**

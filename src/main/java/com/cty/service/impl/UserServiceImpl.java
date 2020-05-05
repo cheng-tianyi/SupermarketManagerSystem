@@ -2,15 +2,18 @@ package com.cty.service.impl;
 
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cty.dao.UserDao;
+import com.cty.entity.Bill;
 import com.cty.entity.User;
 import com.cty.entity.UserQuery;
 import com.cty.entity.pojo.PageResult;
 import com.cty.entity.pojo.Result;
 import com.cty.service.UserService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,25 +42,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectAll() {
-        return userDao.selectAll();
+        return userDao.selectByExample(null);
     }
 
     @Override
     public PageResult findPage(Integer page, Integer pageSize, User user) {
-        PageHelper.startPage(page,pageSize);
-        UserQuery query = new UserQuery();
-        UserQuery.Criteria criteria = query.createCriteria();
-        if (user!=null){
-            if (user.getUserName()!=null&&!"".equals(user.getUserName())){
-                criteria.andUserNameEqualTo(user.getUserName());
-            }
-            if (user.getUserRole()!=null&&0!=user.getUserRole()){
-                criteria.andUserRoleEqualTo(user.getUserRole());
-            }
-        }
-        Page<User> userList = (Page<User>)userDao.selectByExample(query);
-        PageResult result = new PageResult(userList.getTotal(),userList.getResult());
+        IPage<User> ipage = new Page<>(page,pageSize);
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StringUtils.isNotEmpty(user.getUserName()),User::getUserName,user.getUserName());
+        wrapper.eq(user.getUserRole()!=0,User::getUserRole,user.getUserRole());
+        IPage<User> providerIPage = userDao.selectPage(ipage, wrapper);
+        PageResult result = new PageResult(providerIPage.getTotal(),providerIPage.getRecords());
         return result;
+
+//        PageHelper.startPage(page,pageSize);
+//        UserQuery query = new UserQuery();
+//        UserQuery.Criteria criteria = query.createCriteria();
+//        if (user!=null){
+//            if (user.getUserName()!=null&&!"".equals(user.getUserName())){
+//                criteria.andUserNameEqualTo(user.getUserName());
+//            }
+//            if (user.getUserRole()!=null&&0!=user.getUserRole()){
+//                criteria.andUserRoleEqualTo(user.getUserRole());
+//            }
+//        }
+//        Page<User> userList = (Page<User>)userDao.selectByExample(query);
+//        PageResult result = new PageResult(userList.getTotal(),userList.getResult());
+//        return result;
     }
 
     @Override
@@ -75,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        userDao.updateByPrimaryKeySelective(user);
+        userDao.updateById(user);
     }
 
     @Override

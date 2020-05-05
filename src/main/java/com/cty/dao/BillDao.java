@@ -1,13 +1,13 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Bill;
 import com.cty.entity.BillQuery;
 import org.apache.ibatis.annotations.Param;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface BillDao extends Mapper<Bill> {
+public interface BillDao extends BaseMapper<Bill> {
     int countByExample(BillQuery example);
 
     int deleteByExample(BillQuery example);

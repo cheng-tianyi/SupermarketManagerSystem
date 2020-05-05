@@ -18,18 +18,20 @@
         </div>
         <div class="search">
             <form method="get" action="jsp/user.do">
-                <input name="method" value="query" class="input-text" type="hidden"> <span>商品名：</span> <input name="queryname" v-model="searchEntity.userName" class="input-text"
-                                                                                                              type="text" value=""> <span>供应商：</span>
-                <select name="queryUserRole" v-model="searchEntity.userRole">
+                <input name="method" value="query" class="input-text" type="hidden">
+                <span>商品名称：</span> <input name="queryProductName" type="text" value="" v-model="searchEntity.goodName">
+                <span>供应商：</span>
+                <select name="queryProviderId" v-model="searchEntity.provider">
                     <option :value="0">--请选择--</option>
-                    <option :value="roleItem.id" v-for="roleItem in roleList">{{roleItem.roleName}}</option>
+                    <option :value="provider.id" v-for="provider in providerList">{{provider.proName}}</option>
                 </select>
-                <input type="hidden" name="pageIndex" value="1" /> <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/useradd}">添加用户</a>
+                <input type="hidden" name="pageIndex" value="1" /> <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/goodsadd}">添加物品</a>
             </form>
         </div>
         <!--用户-->
         <table class="providerTable" cellpadding="0" cellspacing="0">
             <tr class="firstTr">
+                <th style="display: none" width="10%">id</th>
                 <th width="10%">商品名</th>
                 <th width="20%">供货商</th>
                 <th width="10%">价格</th>
@@ -38,14 +40,15 @@
                 <th width="30%">操作</th>
             </tr>
             <tr class="firstTr" v-for="goods in goodsList">
+                <td style="display: none" width="10%">{{goods.id}}</td>
                 <td width="10%">{{goods.goodName}}</td>
-                <td width="20%">{{goods.provider}}</td>
+                <td width="20%">{{providerEntity[goods.provider]}}</td>
                 <td width="10%">{{goods.price}}</td>
                 <td width="10%">{{goods.expiryDate}}</td>
                 <td width="10%">{{goods.num}}</td>
-                <td><span><button class="viewProvider" proid=><img th:src="@{~/images/read.png}" alt="查看" title="查看" @click="showDetail(userItem)"/></button></span> <span>
-                    <button class="modifyProvider" href="javascript:;" proid=proname=><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" @click="update(userItem)"/></button></span> <span>
-                    <button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteUser(userItem.userCode)"/></button></span></td>
+                <td><span>
+                    <button class="modifyProvider" href="javascript:;" proid=proname=><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" @click="update(goods)"/></button></span> <span>
+                    <button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteGoods(goods.id)"/></button></span></td>
             </tr>
         </table>
         <!--分页-->
@@ -67,13 +70,12 @@
         el:"#root",
         data:{
             goodsList:[],
-            sex:{1:"女",2:"男"},
             page:1,//当前页码
             pageSize:10,//一页多少条数据
             total:0,//总记录数
             maxPage:9,//最大页面数
-            roleEntity:{},
-            roleList:[],
+            providerList:[],
+            providerEntity:{},
             searchEntity:{}
         },
         methods:{
@@ -89,9 +91,9 @@
                     console.log(reason);
                 })
             },
-            deleteUser:function (userCode) {
+            deleteGoods:function (id) {
                 var _this=this;
-                axios.post("/user/deleteUser?userCode="+userCode).then(function (respose) {
+                axios.post("/goods/deleteGoods?id="+id).then(function (respose) {
                     if (respose.data.success) {
                         alert(respose.data.message)
                         _this.pageHandler(1);
@@ -102,25 +104,31 @@
                     console.log(reason);
                 })
             },
-            update:function (user) {
-                var _this=this;
-                axios.post("/user/saveSession",user).then(function (respose) {
-                    location.href="/userModify";
+            loadProvider:function () {
+                var _this = this;
+                axios.post("/provider/findAll").then(function (respose) {
+                    _this.providerList = respose.data;
+                    for (var i =0;i<_this.providerList.length;i++){
+                        var provider = _this.providerList[i];
+                        _this.providerEntity[provider.id]=provider.proName;
+                    }
+                    console.log(_this.providerList)
                 }).catch(function (reason) {
                     console.log(reason);
                 })
             },
-            showDetail:function (user) {
+            update:function (goods) {
                 var _this=this;
-                axios.post("/user/saveSession",user).then(function (respose) {
-                    location.href="/userView";
+                axios.post("/goods/saveSession",goods).then(function (respose) {
+                    location.href="/goodsModify";
                 }).catch(function (reason) {
                     console.log(reason);
                 })
-            }
+            },
         },
         created:function () {
             this.pageHandler(1);
+            this.loadProvider();
         }
     })
 </script>

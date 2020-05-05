@@ -1,12 +1,13 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Address;
 import com.cty.entity.AddressQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface AddressDao {
+public interface AddressDao extends BaseMapper<Address> {
     int countByExample(AddressQuery example);
 
     int deleteByExample(AddressQuery example);

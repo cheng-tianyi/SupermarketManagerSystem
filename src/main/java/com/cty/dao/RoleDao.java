@@ -1,13 +1,13 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Role;
 import com.cty.entity.RoleQuery;
 import org.apache.ibatis.annotations.Param;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface RoleDao extends Mapper<Role> {
+public interface RoleDao extends BaseMapper<Role> {
     int countByExample(RoleQuery example);
 
     int deleteByExample(RoleQuery example);

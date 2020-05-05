@@ -1,13 +1,12 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.User;
 import com.cty.entity.UserQuery;
 import org.apache.ibatis.annotations.Param;
-import tk.mybatis.mapper.common.Mapper;
-
 import java.util.List;
 
-public interface UserDao extends Mapper<User> {
+public interface UserDao extends BaseMapper<User> {
     int countByExample(UserQuery example);
 
     int deleteByExample(UserQuery example);

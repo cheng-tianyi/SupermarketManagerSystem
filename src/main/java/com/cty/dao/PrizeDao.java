@@ -1,12 +1,13 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Prize;
 import com.cty.entity.PrizeQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface PrizeDao {
+public interface PrizeDao extends BaseMapper<Prize> {
     int countByExample(PrizeQuery example);
 
     int deleteByExample(PrizeQuery example);

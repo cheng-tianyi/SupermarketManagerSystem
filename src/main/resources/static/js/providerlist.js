@@ -2,7 +2,7 @@ new Vue({
     el:"#root",
     data:{
         page:1,//当前页码
-        pageSize:5,//一页多少条数据
+        pageSize:10,//一页多少条数据
         total:0,//总记录数
         maxPage:9,//最大页面数
         searchEntity:{},

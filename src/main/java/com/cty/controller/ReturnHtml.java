@@ -61,5 +61,13 @@ public class ReturnHtml {
     public String goodslist() {
         return "goods/goodsList";
     }
+    @RequestMapping("/goodsadd")
+    public String goodsadd() {
+        return "goods/goodsadd";
+    }
+    @RequestMapping("/goodsModify")
+    public String goodsModify() {
+        return "goods/goodsModify";
+    }
 
 }

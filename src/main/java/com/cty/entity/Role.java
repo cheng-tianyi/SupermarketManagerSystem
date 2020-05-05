@@ -1,13 +1,15 @@
 package com.cty.entity;
 
-import javax.persistence.Table;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-@Table(name="smbms_role")
+@TableName("smbms_role")
 public class Role implements Serializable {
     /**
      * 主键ID
      */
+    @TableId
     private Long id;
 
     /**

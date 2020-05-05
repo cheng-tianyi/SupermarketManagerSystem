@@ -1,12 +1,13 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Member;
 import com.cty.entity.MemberQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface MemberDao {
+public interface MemberDao extends BaseMapper<Member> {
     int countByExample(MemberQuery example);
 
     int deleteByExample(MemberQuery example);

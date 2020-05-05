@@ -1,14 +1,14 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Inventory;
 import com.cty.entity.InventoryQuery;
 import com.cty.entity.User;
 import org.apache.ibatis.annotations.Param;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface InventoryDao extends Mapper<Inventory> {
+public interface InventoryDao extends BaseMapper<Inventory> {
     int countByExample(InventoryQuery example);
 
     int deleteByExample(InventoryQuery example);

@@ -1,6 +1,7 @@
 package com.cty.service;
 
 import com.cty.entity.Goods;
+import com.cty.entity.pojo.GoodsDTO;
 import com.cty.entity.pojo.PageResult;
 
 /**
@@ -17,4 +18,10 @@ public interface GoodsService {
      * @return
      */
     PageResult findPage(Integer page, Integer pageSize, Goods goods);
+
+    void goodsAdd(GoodsDTO goodsDTO);
+
+    void update(GoodsDTO goodsDTO);
+
+    void deleteGoodsById(Long id);
 }

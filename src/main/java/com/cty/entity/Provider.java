@@ -1,17 +1,16 @@
 package com.cty.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-@Table(name="smbms_provider")
+@TableName("smbms_provider")
 public class Provider implements Serializable {
     /**
      * 主键ID
      */
-    @Id
+    @TableId
     private Long id;
 
     /**

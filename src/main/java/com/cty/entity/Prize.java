@@ -1,11 +1,12 @@
 package com.cty.entity;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
-@Table(name="smbms_prize")
+@TableName("smbms_prize")
 public class Prize implements Serializable {
-    @Id
+    @TableId
     private Long id;
 
     /**

@@ -1,13 +1,13 @@
 package com.cty.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cty.entity.Provider;
 import com.cty.entity.ProviderQuery;
 import org.apache.ibatis.annotations.Param;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface ProviderDao extends Mapper<Provider> {
+public interface ProviderDao extends BaseMapper<Provider> {
     int countByExample(ProviderQuery example);
 
     int deleteByExample(ProviderQuery example);
