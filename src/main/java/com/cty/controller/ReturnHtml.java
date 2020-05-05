@@ -69,5 +69,17 @@ public class ReturnHtml {
     public String goodsModify() {
         return "goods/goodsModify";
     }
+    @RequestMapping("/memberList")
+    public String memberList() {
+        return "member/memberList";
+    }
+    @RequestMapping("/memberadd")
+    public String memberadd() {
+        return "member/memberadd";
+    }
+    @RequestMapping("/memberModify")
+    public String memberModify() {
+        return "member/memberModify";
+    }
 
 }

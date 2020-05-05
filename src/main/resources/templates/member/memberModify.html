@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
+</head>
+<body>
+
+<div th:replace="~{common/head::#header}"></div>
+    <div id="root">
+        <section>
+            <div class="right">
+                <div class="location">
+                    <strong>你现在所在的位置是:</strong>
+                    <span>用户管理页面 >> 会员修改页面</span>
+                </div>
+                <div class="providerAdd">
+                    <form id="goodsForm" name="goodsForm" method="post" action="">
+                        <input type="hidden" name="method" value="modifyexe"> <input type="hidden" name="uid" value="" />
+                        <div>
+                            <label for="name">姓名：</label> <input type="text" name="name" id="name" value="" v-model="memberEntity.name"> <font color="red"></font>
+                        </div>
+                        <div>
+                            <label>用户性别：</label> <select name="gender" id="gender" v-model="memberEntity.gender">
+                            <option value="1" selected="selected">女</option>
+                            <option value="2">男</option>
+                        </select>
+                        <div>
+                            <label for="phone">电话：</label> <input type="text" name="phone" id="phone" value="" v-model="memberEntity.phone"> <font color="red"></font>
+                        </div>
+                        <div>
+                            <label for="address">地址：</label> <input type="text" name="address" id="address" value="" v-model="memberEntity.address"> <font color="red"></font>
+                        </div>
+                        <div>
+                            <label for="points">积分：</label> <input type="text" name="points" id="points" value="" v-model="memberEntity.points"> <font color="red"></font>
+                        </div>
+                        <div class="providerAddBtn">
+                            <input type="button" name="save" id="save" value="保存" @click="update()"/>
+                            <a type="button" id="back" name="back" th:href="@{~/memberList}">返回</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+<div th:replace="~{common/foot::#footer}"></div>
+<script type="text/javascript" th:src="@{~/vue/vuejs-2.5.16.js}"></script>
+<script type="text/javascript" th:src="@{~/vue/axios-0.18.0.js}"></script>
+</body>
+<script>
+    new Vue({
+        el:"#root",
+        data: {
+            memberEntity:{},
+        },
+        methods:{
+            showData:function () {
+                var _this =this;
+                axios.post("/member/getSessionMember").then(function (respose) {
+                    console.log(respose.data)
+                    _this.memberEntity = respose.data;
+                    console.log(respose.data)
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            update:function () {
+                axios.post("/member/update",this.memberEntity).then(function (respose) {
+                    if (respose.data.success) {
+                        alert(respose.data.message)
+                        location.href="/memberList";
+                    }else {
+                        alert(respose.data.message)
+                    }
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            }
+        },
+        created:function () {
+            this.showData();
+        }
+    })
+</script>
+</html>

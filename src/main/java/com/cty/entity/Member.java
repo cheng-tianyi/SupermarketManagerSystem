@@ -1,11 +1,12 @@
 package com.cty.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 @TableName("smbms_member")
 public class Member implements Serializable {
-    @TableId
+    @TableId(type = IdType.INPUT)
     private Long id;
 
     /**
