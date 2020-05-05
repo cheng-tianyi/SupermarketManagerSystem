@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("goods")
@@ -63,5 +64,11 @@ public class GoodsController {
     public GoodsDTO getSessionGoods(HttpSession session){
         GoodsDTO goodsDTO = (GoodsDTO)session.getAttribute("modifyGoods");
         return goodsDTO;
+    }
+
+    @RequestMapping("findAll")
+    public List<Goods> findAll(){
+        List<Goods> goodsList = goodsService.selectAll();
+        return goodsList;
     }
 }

@@ -1,6 +1,7 @@
 package com.cty.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cty.dao.GoodsDao;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,14 +37,15 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public PageResult findPage(Integer page, Integer pageSize, Goods goods) {
         IPage<Map> page1 = new Page<>(page,pageSize);
-        LambdaQueryWrapper<Goods> wrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
         if(goods!=null) {
-            wrapper.like(StringUtils.isNotEmpty(goods.getGoodName()), Goods::getGoodName, goods.getGoodName());
+            wrapper.like(StringUtils.isNotEmpty(goods.getGoodName()), "good_name", goods.getGoodName());
             if (StringUtils.isNotEmpty(goods.getProvider())){
-                wrapper.eq(Goods::getProvider, Integer.parseInt(goods.getProvider()));
+                wrapper.eq("provider", Integer.parseInt(goods.getProvider()));
             }
 
             wrapper.apply("t.id=k.id");
+            wrapper.orderByAsc("k.num");
         }
         IPage<GoodsDTO> goodsDTOIPage = goodsDao.selectGoods(page1, wrapper);
         PageResult result = new PageResult(goodsDTOIPage.getTotal(),goodsDTOIPage.getRecords());
@@ -73,5 +76,10 @@ public class GoodsServiceImpl implements GoodsService {
     public void deleteGoodsById(Long id) {
         goodsDao.deleteById(id);
         inventoryDao.deleteById(id);
+    }
+
+    @Override
+    public List<Goods> selectAll() {
+        return goodsDao.selectList(null);
     }
 }

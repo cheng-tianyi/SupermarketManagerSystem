@@ -22,7 +22,7 @@ public class LoginController {
         if (loginInfo!=null) {
             session.setAttribute("user", loginInfo);
             System.out.println(loginInfo);
-            return "frame";
+            return "sale";
         }else {
             return "login";
         }

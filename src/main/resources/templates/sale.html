@@ -14,48 +14,36 @@
     <div class="right">
         <div class="location">
             <strong>你现在所在的位置是:</strong>
-            <span>物品管理页面</span>
+            <span>销售页面</span>
         </div>
         <div class="search">
             <form method="get" action="jsp/user.do">
                 <input name="method" value="query" class="input-text" type="hidden">
-                <span>商品名称：</span> <input name="queryProductName" type="text" value="" v-model="searchEntity.goodName">
-                <span>供应商：</span>
-                <select name="queryProviderId" v-model="searchEntity.provider">
-                    <option :value="0">--请选择--</option>
-                    <option :value="provider.id" v-for="provider in providerList">{{provider.proName}}</option>
-                </select>
-                <input type="hidden" name="pageIndex" value="1" /> <input type="button" value="查 询" id="searchbutton" @click="pageHandler(1)"> <a th:href="@{~/goodsadd}">添加物品</a>
+                <span>条形码：</span> <input name="goodCode" type="text" value="" @keyup="checkGoods()" v-model="goodCode">
+                &nbsp;&nbsp;
+                <span>客户：</span> <input name="goodName" type="text" value="" v-model="accountEntity.customer">
+                <span>销售人员：</span> <span disabled="disabled" name="productName" th:text="${session.user.getUserName()}" v-model="accountEntity.saler"></span>
+                <a @click="save()" >结算</a>
             </form>
         </div>
         <!--用户-->
         <table class="providerTable" cellpadding="0" cellspacing="0">
             <tr class="firstTr">
-                <th style="display: none" width="10%">id</th>
-                <th width="10%">商品名</th>
-                <th width="20%">供货商</th>
-                <th width="10%">价格</th>
-                <th width="20%">到期时间</th>
-                <th width="10%">库存</th>
-                <th width="30%">操作</th>
+                <th width="20%">商品名</th>
+                <th width="10%">数量</th>
+                <th width="10%">单价</th>
+                <th width="20%">总价</th>
+                <th width="20%">删除</th>
             </tr>
-            <tr class="firstTr" v-for="goods in goodsList">
-                <td style="display: none" width="10%">{{goods.id}}</td>
-                <td width="10%">{{goods.goodName}}</td>
-                <td width="20%">{{providerEntity[goods.provider]}}</td>
+            <tr class="firstTr" v-for="(goods,index) in accountEntity.goodsList">
+                <td width="20%">{{goods.goodName}}</td>
+                <td width="10%" style="padding: 0"><input  jwcid="@Any" @keyup="totalprice2(index)" v-model="goods.count" raw="true"
+                                               style="border: none;overflow: hidden;width: 100%;height: 100%;background:none"/></td>
                 <td width="10%">{{goods.price}}</td>
-                <td width="10%">{{goods.expiryDate}}</td>
-                <td width="10%">{{goods.num}}</td>
-                <td><span>
-                    <button class="modifyProvider" href="javascript:;" proid=proname=><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" @click="update(goods)"/></button></span> <span>
-                    <button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteGoods(goods.id)"/></button></span></td>
+                <td width="20%">{{goods.totalPrice}}</td>
+                <td width="20%"><button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteGoods(index)"/></button></span></td>
             </tr>
         </table>
-        <!--分页-->
-        <zpagenav v-bind:page="page" v-bind:page-size="pageSize" v-bind:total="total"
-                  v-bind:max-page="maxPage"  v-on:pagehandler="pageHandler">
-        </zpagenav>
-        <input type="hidden" id="totalPageCount" value="" />
     </div>
     </section>
 </div>
@@ -69,54 +57,12 @@
     new Vue({
         el:"#root",
         data:{
+            accountEntity:{goodsList:[]},
             goodsList:[],
-            page:1,//当前页码
-            pageSize:10,//一页多少条数据
-            total:0,//总记录数
-            maxPage:9,//最大页面数
-            providerList:[],
-            providerEntity:{},
-            searchEntity:{}
+            goodCode:"",
+            goods:{}
         },
         methods:{
-            pageHandler:function (page) {
-                this.page=page;
-                var _this=this;
-                axios.post("/goods/findPage?page="+this.page+"&pageSize="+this.pageSize,this.searchEntity).then(function (respose) {
-                    _this.total=respose.data.total;
-                    _this.goodsList = respose.data.rows;
-                    console.log(_this.goodsList)
-
-                }).catch(function (reason) {
-                    console.log(reason);
-                })
-            },
-            deleteGoods:function (id) {
-                var _this=this;
-                axios.post("/goods/deleteGoods?id="+id).then(function (respose) {
-                    if (respose.data.success) {
-                        alert(respose.data.message)
-                        _this.pageHandler(1);
-                    }else {
-                        alert(respose.data.message)
-                    }
-                }).catch(function (reason) {
-                    console.log(reason);
-                })
-            },
-            loadProvider:function () {
-                var _this = this;
-                axios.post("/provider/findAll").then(function (respose) {
-                    _this.providerList = respose.data;
-                    for (var i =0;i<_this.providerList.length;i++){
-                        var provider = _this.providerList[i];
-                        _this.providerEntity[provider.id]=provider.proName;
-                    }
-                    console.log(_this.providerList)
-                }).catch(function (reason) {
-                    console.log(reason);
-                })
-            },
             update:function (goods) {
                 var _this=this;
                 axios.post("/goods/saveSession",goods).then(function (respose) {
@@ -125,10 +71,56 @@
                     console.log(reason);
                 })
             },
+            loadGoods:function () {
+                var _this=this;
+                axios.post("/goods/findAll").then(function (respose) {
+                    console.log(respose.data);
+                    _this.goodsList = respose.data;
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            },
+            checkGoods:function () {
+                for (var i =0;i<this.goodsList.length;i++){
+                    var goods = this.goodsList[i];
+                    if(goods.goodCode==this.goodCode){
+                        console.log(goods)
+                        goods.count=1;
+                        this.totalprice(goods);
+                        this.accountEntity.goodsList.push(goods);
+                    }
+                }
+            },
+            totalprice:function (goods) {
+                console.log(goods);
+                goods.totalPrice = goods.count*goods.price;
+            },
+            totalprice2:function (index) {
+                console.log(index)
+                var goods =  this.accountEntity.goodsList[index];
+                console.log(goods);
+                goods.totalPrice = goods.count*goods.price;
+                Vue.set(this.accountEntity.goodsList,index,goods);
+            },
+            deleteGoods:function (index) {
+                this.accountEntity.goodsList.splice(index,1);
+            },
+            save:function () {
+                axios.post("/order/save",this.accountEntity).then(function (respose) {
+                    if (respose.data.success) {
+                        alert(respose.data.message)
+                        location.href="/sale";
+                    }else {
+                        alert(respose.data.message)
+                    }
+
+                }).catch(function (reason) {
+                    console.log(reason);
+                })
+            }
         },
         created:function () {
-            this.pageHandler(1);
-            this.loadProvider();
+            this.loadGoods();
         }
     })
 </script>

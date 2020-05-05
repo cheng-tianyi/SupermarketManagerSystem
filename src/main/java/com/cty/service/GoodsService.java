@@ -4,6 +4,8 @@ import com.cty.entity.Goods;
 import com.cty.entity.pojo.GoodsDTO;
 import com.cty.entity.pojo.PageResult;
 
+import java.util.List;
+
 /**
  * @Author wuyong7
  * @Description
@@ -24,4 +26,6 @@ public interface GoodsService {
     void update(GoodsDTO goodsDTO);
 
     void deleteGoodsById(Long id);
+
+    List<Goods> selectAll();
 }

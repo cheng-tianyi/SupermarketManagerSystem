@@ -1,6 +1,8 @@
 package com.cty.controller;
 
+import com.cty.entity.Goods;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -80,6 +82,10 @@ public class ReturnHtml {
     @RequestMapping("/memberModify")
     public String memberModify() {
         return "member/memberModify";
+    }
+    @RequestMapping("/sale")
+    public String sale() {
+        return "sale";
     }
 
 }

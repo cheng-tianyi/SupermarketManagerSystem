@@ -1,6 +1,7 @@
 package com.cty.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
@@ -35,5 +36,5 @@ public interface GoodsDao extends BaseMapper<Goods> {
 
     int updateByPrimaryKey(Goods record);
 
-    IPage<GoodsDTO> selectGoods(IPage page,@Param(Constants.WRAPPER) LambdaQueryWrapper<Goods> goods);
+    IPage<GoodsDTO> selectGoods(IPage page,@Param(Constants.WRAPPER) QueryWrapper<Goods> goods);
 }

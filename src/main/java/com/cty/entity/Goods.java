@@ -1,6 +1,7 @@
 package com.cty.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -62,6 +63,13 @@ public class Goods implements Serializable {
      * 备注
      */
     private String note;
+    /**
+     * 备注
+     */
+    @TableField(exist = false)
+    private Long count;
+    @TableField(exist = false)
+    private BigDecimal totalPrice;
 
 
 

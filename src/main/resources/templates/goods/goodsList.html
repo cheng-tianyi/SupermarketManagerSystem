@@ -6,7 +6,12 @@
     <link type="text/css" rel="stylesheet" th:href="@{~/css/style.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{~/css/public.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{~/pageination/zpageNav.css}" />
-
+    <style>
+        .active{
+            color: red;
+            font-size: 30px;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{common/head::#header}"></div>
@@ -45,7 +50,7 @@
                 <td width="20%">{{providerEntity[goods.provider]}}</td>
                 <td width="10%">{{goods.price}}</td>
                 <td width="10%">{{goods.expiryDate}}</td>
-                <td width="10%">{{goods.num}}</td>
+                <td width="10%" :class="{active: goods.num<10}">{{goods.num}}</td>
                 <td><span>
                     <button class="modifyProvider" href="javascript:;" proid=proname=><img th:src="@{~/images/xiugai.png}" alt="修改" title="修改" @click="update(goods)"/></button></span> <span>
                     <button class="deleteProvider" proid=><img th:src="@{~/images/schu.png}" alt="删除" title="删除" @click="deleteGoods(goods.id)"/></button></span></td>
